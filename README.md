@@ -1,4 +1,4 @@
-# <film-strip>
+# \<film-strip\>
 
 A custom element for the web to show the frames of a video. You can configure the **frame rate** and the **cell size** of the film strip. Can be used with any framework or on plain old html. 
 
