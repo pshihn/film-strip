@@ -32,9 +32,6 @@ export class FilmStrip extends HTMLElement implements VirtualizationDelegate {
         display: block;
         position: relative;
       }
-      #videoShell {
-        background: pink;
-      }
       #videoShell2 {
         position: absolute;
         top: 0;
@@ -158,20 +155,22 @@ export class FilmStrip extends HTMLElement implements VirtualizationDelegate {
     canvas.style.display = 'block';
     canvas.style.marginLeft = `${this.cellGap / 2}px`;
     canvas.style.marginTop = `${this.cellGap / 2}px`;
+    canvas.width = this.cellWidth;
+    canvas.height = this.cellHeight;
     return canvas;
   }
 
   updateElement(child: HTMLElement, index: number): void {
     const canvas = child as HTMLCanvasElement;
     this.frameIndexMap.set(canvas, index);
-    canvas.width = this.cellWidth;
-    canvas.height = this.cellHeight;
     this.renderFrame(index, canvas);
   }
 
   private async renderFrame(index: number, canvas: HTMLCanvasElement) {
+    const p1 = performance.now();
     const timestamp = Math.max(0, Math.min(this.videoDuration, index / this.rate));
     await this.vm!.seekCapture(canvas, timestamp);
+    console.log(index, performance.now() - p1);
   }
 }
 customElements.define('film-strip', FilmStrip);

@@ -1,3 +1,5 @@
+import { Cache } from './cache.js';
+
 export interface MediaSource {
   url: string;
   mime: string;
@@ -67,6 +69,8 @@ export class SeekTask implements MediaTask {
   }
 }
 
+const canvasCahe = new Cache<number, HTMLCanvasElement>();
+
 export class SeekCaptureTask implements MediaTask {
   private time: number;
   private canvas: HTMLCanvasElement;
@@ -91,10 +95,18 @@ export class SeekCaptureTask implements MediaTask {
   }
 
   async run(video: HTMLVideoElement): Promise<void> {
-    await this.seek(video);
-
     const ctx = this.canvas.getContext('2d')!;
     const { width, height } = this.canvas;
-    ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, width, height);
+    let cached = canvasCahe.get(this.time);
+    if (!cached) {
+      await this.seek(video);
+      cached = document.createElement('canvas');
+      cached.width = width;
+      cached.height = height;
+      const ctx2 = cached.getContext('2d')!;
+      ctx2.drawImage(video, 0, 0, width, height);
+      canvasCahe.set(this.time, cached);
+    }
+    ctx.drawImage(cached, 0, 0);
   }
 }

@@ -62,9 +62,7 @@ export class FilmStripListElement extends HTMLElement {
 
   set delegate(value: VirtualizationDelegate) {
     this._delegate = value;
-    if (this.vl) {
-      this.vl.delegate = value;
-    }
+    this.update();
   }
 
   private update() {
