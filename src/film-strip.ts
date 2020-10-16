@@ -5,7 +5,7 @@ import './list-element';
 import { VirtualizationDelegate } from './list';
 
 export class FilmStrip extends HTMLElement implements VirtualizationDelegate {
-  static get observedAttributes() { return ['src', 'type', 'rate']; }
+  static get observedAttributes() { return ['src', 'type', 'rate', 'height']; }
 
   private root: ShadowRoot;
   private connected = false;
@@ -32,7 +32,7 @@ export class FilmStrip extends HTMLElement implements VirtualizationDelegate {
         display: block;
         position: relative;
       }
-      #videoShell2 {
+      #videoShell {
         position: absolute;
         top: 0;
         left: 0;
@@ -102,8 +102,21 @@ export class FilmStrip extends HTMLElement implements VirtualizationDelegate {
   }
 
   set rate(value: number) {
+    value = +value;
     if (value !== this._rate) {
       this._rate = value;
+      this.reload();
+    }
+  }
+
+  get height(): number {
+    return this.cellHeight;
+  }
+
+  set height(value: number) {
+    value = +value;
+    if (value !== this.cellHeight) {
+      this.cellHeight = value;
       this.reload();
     }
   }
@@ -170,7 +183,6 @@ export class FilmStrip extends HTMLElement implements VirtualizationDelegate {
     const p1 = performance.now();
     const timestamp = Math.max(0, Math.min(this.videoDuration, index / this.rate));
     await this.vm!.seekCapture(canvas, timestamp);
-    console.log(index, performance.now() - p1);
   }
 }
 customElements.define('film-strip', FilmStrip);
