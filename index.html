@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 17px;
+      line-height: 1.5;
+      background: black;
+      color: white;
+    }
+
+    main,
+    header {
+      max-width: 600px;
+      padding: 32px 16px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-weight: 300;
+      letter-spacing: 2px;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      background: lightcyan;
+      border: none;
+      padding: 8px 10px;
+      min-width: 80px;
+      font-size: 16px;
+      font-weight: 300;
+      font-family: inherit;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      margin-right: 16px;
+    }
+
+    section {
+      padding: 10px 0 20px;
+    }
+
+    label {
+      font-family: monospace;
+      margin-bottom: 8px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>&lt;film-strip&gt;</h1>
+    <p>A custom element for the web that shows the frames of a video file. Once can choose the cell size of each frame
+      and the frame rate to sample the video at.</p>
+    <p>It's less than 3KB in size when gzipped. The code and documentation is available <a
+        href="https://github.com/pshihn/film-strip">on Github</a>.</p>
+  </header>
+
+  <film-strip src="./sample.mp4" height="100"></film-strip>
+
+  <main>
+    <section>
+      <label>Cell Height</label>
+      <div>
+        <button id="btn200">200px</button>
+        <button id="btn100">100px</button>
+      </div>
+    </section>
+    <section>
+      <label>Frame Rate (frames per second)</label>
+      <div>
+        <button id="fr3">3</button>
+        <button id="fr10">10</button>
+        <button id="fr30">30</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./film-strip.min.js"></script>
+  <script>
+    const fs = document.querySelector('film-strip');
+    document.querySelector('#btn200').addEventListener('click', () => fs.height = 200);
+    document.querySelector('#btn100').addEventListener('click', () => fs.height = 100);
+    document.querySelector('#fr3').addEventListener('click', () => fs.rate = 3);
+    document.querySelector('#fr10').addEventListener('click', () => fs.rate = 10);
+    document.querySelector('#fr30').addEventListener('click', () => fs.rate = 30);
+
+  </script>
+</body>
+
+</html>
