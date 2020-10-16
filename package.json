@@ -1,6 +1,6 @@
 {
   "name": "film-strip-element",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A component to show a film strip version of a video file ",
   "main": "bin/film-strip.min.js",
   "module": "bin/film-strip.min.js",
