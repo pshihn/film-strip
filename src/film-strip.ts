@@ -140,6 +140,7 @@ export class FilmStrip extends HTMLElement implements VirtualizationDelegate {
       if (!this.vm) {
         this.vm = new VideoManager(this.video);
       }
+      this.vm.clear();
 
       // load video
       await this.vm.loadVideo(this._src);
