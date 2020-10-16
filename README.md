@@ -4,7 +4,7 @@ A custom element for the web to show the frames of a video. You can configure th
 
 See it in action: https://pshihn.github.io/film-strip/
 
-The strip uses a virtual scroller and lazy loads the frames as they come into view for better performance. It's also < 3KB in size when gzipped. 
+The strip uses a virtual scroller and lazy loads the frames as they come into view for better performance. It's also less than 3KB in size when gzipped. 
 
 ## Usage
 
