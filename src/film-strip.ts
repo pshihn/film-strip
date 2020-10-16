@@ -1,8 +1,8 @@
 import { FilmStripListElement } from './list-element';
 import { VideoManager } from './video-manager.js';
+import { VirtualizationDelegate } from './list';
 
 import './list-element';
-import { VirtualizationDelegate } from './list';
 
 export class FilmStrip extends HTMLElement implements VirtualizationDelegate {
   static get observedAttributes() { return ['src', 'type', 'rate', 'height']; }
