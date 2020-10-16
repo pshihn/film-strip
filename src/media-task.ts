@@ -47,37 +47,15 @@ export class LoadTask implements MediaTask {
   }
 }
 
-export class SeekTask implements MediaTask {
-  private time: number;
-
-  constructor(time: number) {
-    this.time = time;
-  }
-
-  async run(video: HTMLVideoElement): Promise<void> {
-    return new Promise((resolve) => {
-      const removeListeners = () => {
-        video.removeEventListener('seeked', seekCallback);
-      };
-      const seekCallback = () => {
-        removeListeners();
-        resolve();
-      };
-      video.addEventListener('seeked', seekCallback);
-      video.currentTime = this.time;
-    });
-  }
-}
-
-const canvasCahe = new Cache<number, HTMLCanvasElement>();
-
 export class SeekCaptureTask implements MediaTask {
   private time: number;
   private canvas: HTMLCanvasElement;
+  private cache: Cache<number, HTMLCanvasElement>;
 
-  constructor(canvas: HTMLCanvasElement, time: number) {
+  constructor(canvas: HTMLCanvasElement, time: number, cache: Cache<number, HTMLCanvasElement>) {
     this.canvas = canvas;
     this.time = time;
+    this.cache = cache;
   }
 
   private seek(video: HTMLVideoElement): Promise<void> {
@@ -97,7 +75,7 @@ export class SeekCaptureTask implements MediaTask {
   async run(video: HTMLVideoElement): Promise<void> {
     const ctx = this.canvas.getContext('2d')!;
     const { width, height } = this.canvas;
-    let cached = canvasCahe.get(this.time);
+    let cached = this.cache.get(this.time);
     if (!cached) {
       await this.seek(video);
       cached = document.createElement('canvas');
@@ -105,7 +83,7 @@ export class SeekCaptureTask implements MediaTask {
       cached.height = height;
       const ctx2 = cached.getContext('2d')!;
       ctx2.drawImage(video, 0, 0, width, height);
-      canvasCahe.set(this.time, cached);
+      this.cache.set(this.time, cached);
     }
     ctx.drawImage(cached, 0, 0);
   }

@@ -1,4 +1,5 @@
 import { LoadTask, MediaTask, SourceTask, SeekCaptureTask } from './media-task';
+import { Cache } from './cache.js';
 
 interface PromiseFunctions {
   resolve: any;
@@ -15,6 +16,7 @@ export class VideoManager {
   private video: HTMLVideoElement;
   private tasks: MediaTask[] = [];
   private map = new Map<MediaTask, PromiseFunctions>();
+  private canvasCahe = new Cache<number, HTMLCanvasElement>();
 
   constructor(video: HTMLVideoElement) {
     this.video = video;
@@ -72,6 +74,10 @@ export class VideoManager {
   }
 
   async seekCapture(canvas: HTMLCanvasElement, timestamp: number): Promise<void> {
-    return this.enqueue(new SeekCaptureTask(canvas, timestamp));
+    return this.enqueue(new SeekCaptureTask(canvas, timestamp, this.canvasCahe));
+  }
+
+  clear() {
+    this.canvasCahe.clear();
   }
 }
