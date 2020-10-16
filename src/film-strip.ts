@@ -180,7 +180,6 @@ export class FilmStrip extends HTMLElement implements VirtualizationDelegate {
   }
 
   private async renderFrame(index: number, canvas: HTMLCanvasElement) {
-    const p1 = performance.now();
     const timestamp = Math.max(0, Math.min(this.videoDuration, index / this.rate));
     await this.vm!.seekCapture(canvas, timestamp);
   }
